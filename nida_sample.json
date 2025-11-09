@@ -1,0 +1,33 @@
+{
+  "requestId": "NIDA-REQ-2025-0001",
+  "nidaNumber": "19901234567890000123",
+  "firstName": "Amani",
+  "middleName": "Juma",
+  "lastName": "Kassim",
+  "dateOfBirth": "1990-07-14",
+  "gender": "M",
+  "nationality": "TZ",
+  "placeOfBirth": {
+    "region": "Dar es Salaam",
+    "district": "Ilala",
+    "ward": "Kivukoni"
+  },
+  "residence": {
+    "region": "Dodoma",
+    "district": "Dodoma Urban",
+    "ward": "Makulu",
+    "street": "Sam Nujoma Rd",
+    "houseNumber": "Plot 12, Block B"
+  },
+  "contact": {
+    "phone": "+255712345678",
+    "email": "amani.kassim@example.tz"
+  },
+  "document": {
+    "type": "NIDA",
+    "issueDate": "2012-09-01",
+    "expiryDate": "2032-09-01"
+  }
+}
+
+

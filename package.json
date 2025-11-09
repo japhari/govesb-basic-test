@@ -1,0 +1,15 @@
+{
+  "name": "govesb-basic",
+  "private": true,
+  "version": "0.0.1",
+  "description": "GovESB basic example using govesb-connector-js with a NIDA-style payload",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "govesb-connector-js": "^0.1.0"
+  }
+}
+
+
