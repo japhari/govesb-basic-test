@@ -5,11 +5,12 @@
   "description": "GovESB basic example using govesb-connector-js with a NIDA-style payload",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server.js",
+    "serve": "node server.js"
   },
   "dependencies": {
-    "govesb-connector-js": "^0.1.0"
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "govesb-connector-js": "^0.1.1"
   }
 }
-
-

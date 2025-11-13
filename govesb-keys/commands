@@ -1,0 +1,9 @@
+//public key
+openssl ecparam -name secp256k1 -genkey -out privateKey.pem
+or
+openssl ecparam -name secp521r1 -genkey -out privateKey.pem
+
+
+//private key
+openssl ec -in privateKey.pem -pubout -out publicKey.pem
+

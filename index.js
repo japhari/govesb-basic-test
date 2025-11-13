@@ -41,6 +41,45 @@ const { GovEsbHelper } = require('govesb-connector-js');
 	fs.writeFileSync(path.join(outDir, 'encrypted.json'), encrypted);
 	fs.writeFileSync(path.join(outDir, 'decrypted.json'), decrypted);
 	console.log('Wrote out/encrypted.json and out/decrypted.json');
+
+	// STEP 1: Build esbBody as the encrypted payload (what you would send)
+	const esbBodyEncrypted = JSON.parse(encrypted);
+	fs.writeFileSync(path.join(outDir, 'esbBody.encrypted.json'), JSON.stringify(esbBodyEncrypted, null, 2));
+	console.log('Wrote out/esbBody.encrypted.json (this is the esbBody).');
+
+	// Optional: Sign payloads using the package helper (requires govesb-connector-js >= 0.1.1)
+	try {
+		const payloadSignature = helper.signPayload(payload);
+		const payloadVerifyOk = helper.verifySignature(payload, payloadSignature);
+		fs.writeFileSync(path.join(outDir, 'payload.signature.b64.txt'), payloadSignature);
+		console.log('Signed raw payload. Verified:', payloadVerifyOk);
+
+		const esbBodySignature = helper.signPayload(esbBodyEncrypted);
+		const esbBodyVerifyOk = helper.verifySignature(esbBodyEncrypted, esbBodySignature);
+		fs.writeFileSync(path.join(outDir, 'esbBody.signature.b64.txt'), esbBodySignature);
+		console.log('Signed esbBody payload. Verified:', esbBodyVerifyOk);
+	} catch (e) {
+		console.log('signPayload/verifySignature not available in installed package. Upgrade to govesb-connector-js >= 0.1.1');
+	}
+
+	// STEP 2: Send as a normal payload (offline demo prints the body you'd pass to requestData)
+	// In live mode, you'd do:
+	// await helper.requestData('YOUR_API_CODE', JSON.stringify(esbBodyEncrypted), 'json')
+	// Here we just persist the payload you would pass as requestBody:
+	fs.writeFileSync(path.join(outDir, 'request.payload.json'), JSON.stringify(esbBodyEncrypted, null, 2));
+	console.log('Wrote out/request.payload.json (requestBody to pass to requestData in JSON mode).');
+
+	// OPTIONAL: Sign the request payload using helper.signPayload to produce ESB-style wrapper
+	const esbRequestDataString = JSON.stringify(esbBodyEncrypted);
+	const signatureB64 = helper.signPayload(esbRequestDataString);
+	const signedRequest = { data: esbBodyEncrypted, signature: signatureB64 };
+
+	// Verify locally before sending
+	const verifiedOk = helper.verifyPayload(esbRequestDataString, signatureB64);
+	console.log('Signed request verifies:', verifiedOk);
+
+	fs.writeFileSync(path.join(outDir, 'request.signed.json'), JSON.stringify(signedRequest, null, 2));
+	console.log('Wrote out/request.signed.json (ESB-style signed wrapper).');
 })().catch(err => {
 	console.error(err);
 	process.exit(1);
